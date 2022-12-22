@@ -1,22 +1,26 @@
 import {useState} from 'react';
-import { View, Text,StyleSheet, TouchableOpacity, TextInput, SafeAreaView} from 'react-native';
+import { View, Text,StyleSheet, TouchableOpacity, TextInput, SafeAreaView, Image, ScrollView} from 'react-native';
 import { useAppSelector, useAppDispatch } from '../../hook/hook'
 import { singIn } from '../../feacture/authSlice'
 import { AntDesign } from '@expo/vector-icons';
-
-import { Canvas, Circle, Group } from '@shopify/react-native-skia'
 import { colores } from '../../theme/Colores';
+import { CanvasComponent } from '../../components/CanvasComponent';
+import { GlobalStyle } from '../../theme/GlobalStyle';
+import { StackScreenProps } from '@react-navigation/stack';
 
-export const SignIn = () => {
 
+interface Props extends StackScreenProps<any, any>{};
+
+
+export const SignIn = ({navigation}: Props) => {
   const [eye, setEye] = useState(true);
-
   const [email, setEmail] = useState('');
   const [pass, setPass] = useState('');
 
 
   return (
-    <SafeAreaView style={{flex:1}}>
+    <ScrollView style={{flex:1, backgroundColor: colores.white}} >
+
         <View style={{position:'absolute', marginTop: 100, zIndex:2, marginHorizontal: 10}}>
           <View style={{flexDirection: 'row', alignItems:'center'}}>
             <Text style={styles.txtHeader}>Iniciar sesión</Text>
@@ -24,29 +28,25 @@ export const SignIn = () => {
           </View>
           <Text style={{color: colores.white}}>¡Bienvenido de nuevo!</Text>
         </View>
-        <Canvas style={{height: 250}}>
-          <Group blendMode='multiply'>
-            <Circle cx={130} cy={-100} r={350} color={colores.primary} />
-            <Circle cx={400} cy={70} r={150} color={colores.primary} />
-          </Group>
-        </Canvas>
+
+        <CanvasComponent/>
 
         <View style={styles.container}>
             <View style={{flexDirection:'row', justifyContent:'center', alignItems:'center', marginVertical:20}}>
-              <Text style={styles.txtTitle}>Hospital </Text>
-              <Text style={[styles.txtTitle, {color:colores.primary}]}>Piedra Blanca</Text>
+              <Text style={GlobalStyle.txtTitle}>Hospital </Text>
+              <Text style={[GlobalStyle.txtTitle, {color:colores.primary}]}>Piedra Blanca</Text>
             </View>
 
             <View>
                 <View>
                   <TextInput 
-                    style={styles.input}
+                    style={GlobalStyle.input}
                     value={email}
                     placeholder='Email'
                     onChangeText={e => setEmail(e)}
                     keyboardType="email-address"
                     />
-                    <TouchableOpacity style={styles.eyes} onPress={() => setEmail('')}>
+                    <TouchableOpacity style={GlobalStyle.eyes} onPress={() => setEmail('')}>
                       {
                         (email.length > 0) ? <AntDesign name="delete" size={24} color="black" /> : ''
                       }
@@ -55,17 +55,17 @@ export const SignIn = () => {
 
                 <View>
                   <TextInput 
-                    style={styles.input}
+                    style={GlobalStyle.input}
                     placeholder='Contraseña'
                     secureTextEntry={eye}
                     onChangeText={e => setPass(e)}
-                  />
+                    />
                     
-                  <TouchableOpacity style={styles.eyes} onPress={() => (eye) ? setEye(false): setEye(true)}>
+                  <TouchableOpacity style={GlobalStyle.eyes} onPress={() => (eye) ? setEye(false): setEye(true)}>
                     {
                       (eye) ?<AntDesign name="eyeo" size={24} color={colores.third} />
-                        :
-                        <AntDesign name="eye" size={24}  color={colores.primary} />
+                      :
+                      <AntDesign name="eye" size={24}  color={colores.primary} />
                     }
                   </TouchableOpacity>
                 </View>
@@ -74,13 +74,30 @@ export const SignIn = () => {
                   <Text>Recuperar contraseña</Text>
                 </TouchableOpacity>
                 
-                <TouchableOpacity style={styles.btnLogin}>
-                  <Text style={styles.txtLogin}>Inicia Sesión</Text>
+                <TouchableOpacity style={GlobalStyle.btnLogin}>
+                  <Text style={GlobalStyle.txtLogin}>Inicia Sesión</Text>
                 </TouchableOpacity>
-
             </View>
+
+            <View style={styles.containerLine}>
+              <Text style={styles.lineSign}></Text>
+              <Text style={{marginHorizontal: 5, color: colores.third}}>Or sign up with</Text>
+              <Text style={styles.lineSign}></Text>
+            </View>
+            
+            <TouchableOpacity style={styles.containerGoogle}>
+                <Image style={{alignSelf:'center'}} source={require('../../assets/google.png')} />
+            </TouchableOpacity>            
+
+          <View style={GlobalStyle.footer}>
+              <Text style={{color: colores.third}}>¿Aún no te registras? </Text>
+              <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
+                <Text style={{color: colores.black, fontWeight: '600'}}>Crear una cuenta</Text>
+              </TouchableOpacity>
+          </View>
+        
         </View>
-    </SafeAreaView>
+        </ScrollView>
   )
 }
 
@@ -93,44 +110,38 @@ const styles = StyleSheet.create({
     fontWeight:'600',
     color: colores.white
   },
-  txtTitle:{
-    fontSize: 40,
-    fontWeight:'500',
-    textAlign:'auto',
+
+
+  containerLine:{
+    flexDirection:'row',
+    justifyContent:'center',
+    alignItems:'center'
   },
-  input:{
+  lineSign:{
+    flex: 1,
+    height: 0.1,
+    borderWidth: 0.2,
+    borderColor: colores.third
+    
+  },
+  containerGoogle:{
+    width: 75,
     height: 48,
+    marginVertical: 20,
+    justifyContent:'center',
+    alignItems:'center',
+    backgroundColor: colores.white,
+    alignSelf:'center',
     borderRadius: 10,
-    borderWidth: StyleSheet.hairlineWidth,
-    marginVertical: 10,
-    paddingLeft: 20,
-    paddingRight: 40,
-    fontSize: 15
+
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,    
+    elevation: 2,
   },
-  eyes:{
-    position:'absolute',
-    right:10,
-    top: 22
-  },
-  btnLogin:{
-      height:48,
-      marginVertical: 50,
-      backgroundColor: colores.primary,
-      justifyContent:'center',
-      alignItems:'center',
-      borderRadius: 10,
-      shadowColor: colores.black,
-      shadowOffset: {
-        width: 0,
-        height: 2
-      },
-      shadowRadius: 3.5,
-      shadowOpacity: 5,
-      elevation: 5
-  },
-  txtLogin:{
-    color: colores.white,
-    fontSize: 18,
-    fontWeight: '400'
-  }
+
 })
