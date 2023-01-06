@@ -1,16 +1,16 @@
 import 'react-native-gesture-handler';
 import { StatusBar } from 'expo-status-bar';
 import { Provider } from 'react-redux';
-import {store} from './src/app/store';
+import { store } from './src/app/store';
 import { RootNavigation } from './src/navigation/RootNavigation';
 
 const App = () => {
 
-  return(
+  return (
     <Provider store={store}>
-      <RootNavigation/>
-      <StatusBar  style='light'/>
-    </Provider>    
+      <RootNavigation />
+      <StatusBar style='light' />
+    </Provider>
   )
 }
 
