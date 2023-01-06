@@ -16,7 +16,7 @@ export const GlobalStyle = StyleSheet.create({
     paddingLeft: 20,
     paddingRight: 40,
     fontSize: 15,
-    textTransform: 'lowercase'
+    // textTransform: 'lowercase'
   },
   eyes: {
     position: 'absolute',

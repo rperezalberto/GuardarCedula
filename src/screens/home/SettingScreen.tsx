@@ -1,11 +1,13 @@
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
-import { signOuts } from '../../feacture/authSlice';
-import { useAppDispatch } from '../../hook/hook';
+import { getProfileInfo, signOuts } from '../../feacture/authSlice';
+import { useAppDispatch, useAppSelector } from '../../hook/hook';
 import { Foundation } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
 import { colores } from '../../theme/Colores';
 import { StackScreenProps } from '@react-navigation/stack';
-
+import { useEffect } from 'react';
+import { dbFirestore } from '../../firebase/config';
+import { doc, onSnapshot } from 'firebase/firestore';
 
 
 interface Props extends StackScreenProps<any, any> { };
@@ -13,6 +15,18 @@ interface Props extends StackScreenProps<any, any> { };
 export const SettingScreen = ({ navigation }: Props) => {
 
     const dispatch = useAppDispatch();
+    const { token, name, email } = useAppSelector(state => state.auth);
+
+    const getInfoProfile = () => {
+        onSnapshot(doc(dbFirestore, `usuarios/${token}`), (doc) => {
+            dispatch(getProfileInfo(doc.data()));
+        })
+    }
+
+    useEffect(() => {
+        getInfoProfile();
+    }), [];
+
 
     return (
         <View style={styles.container}>
@@ -25,8 +39,10 @@ export const SettingScreen = ({ navigation }: Props) => {
                 </TouchableOpacity>
 
                 <View style={{ marginHorizontal: 20 }}>
-                    <Text style={styles.txtName}>Louise Joy King</Text>
-                    <Text style={styles.txtEmail}>correo@gmail.com</Text>
+                    {
+                        (name) && <Text style={styles.txtName}>{name}</Text>
+                    }
+                    <Text style={styles.txtEmail}>{email}</Text>
                 </View>
             </View>
 
@@ -44,7 +60,7 @@ export const SettingScreen = ({ navigation }: Props) => {
                 <Text style={{ fontSize: 14, fontWeight: '600' }}>Editar Perfil</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.containerMenu}>
+            <TouchableOpacity style={styles.containerMenu} onPress={() => navigation.navigate('UsersSetting')}>
                 <View style={[styles.containerIcon]}>
                     <Foundation name="torsos" size={20} color={colores.white} />
                 </View>

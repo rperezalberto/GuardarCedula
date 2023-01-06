@@ -1,21 +1,14 @@
 import { createStackNavigator } from "@react-navigation/stack";
-import { AddPhoto } from '../screens/home/AddPhoto';
 import { TabsNavigation } from './TabsNavigation';
-import { HomeScreen } from '../screens/home/HomeScreen';
-import { colores } from '../theme/Colores';
-import { MenuComponents } from "../components/MenuComponents";
-import { InfoDocScreen } from "../screens/home/InfoDocScreen";
-import { ActivityScreen } from '../screens/activity/ActivityScreen';
-import { SettingScreen } from '../screens/home/SettingScreen';
+import { colores } from '../theme/Colores';;
 import { EditProfile } from '../screens/setting/EditProfile';
+import { UsersSetting } from '../screens/setting/UsersSetting';
 
 
 export type RootStack = {
     HomeScreen: undefined,
-    SettingScreen: undefined
-    AddPhoto: undefined,
-    InfoDocumento: undefined
     EditProfile: undefined
+    UsersSetting: undefined
 }
 
 
@@ -58,29 +51,14 @@ export const StackGlobal = () => {
 
 
 
-            {/* <Stack.Screen
-                name="SettingScreen"
-                component={SettingScreen}
-            />
-
-
             <Stack.Screen
-                name="AddPhoto"
-                component={AddPhoto}
+                name="UsersSetting"
+                component={UsersSetting}
+                options={{
+                    title: "Usuarios",
+                    headerShown: true,
+                }}
             />
-
-            <Stack.Screen
-                name="InfoDocumento"
-                component={InfoDocScreen}
-            />
-
-
-            <Stack.Screen
-                name="ActivityScreen"
-                component={ActivityScreen}
-            /> */}
-
-
 
         </Stack.Navigator>
     )

@@ -3,10 +3,45 @@ import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-nativ
 import { GlobalStyle } from '../../theme/GlobalStyle';
 import { AntDesign } from '@expo/vector-icons';
 import { colores } from '../../theme/Colores';
+import { useAppSelector } from '../../hook/hook';
+import { dbFirestore } from '../../firebase/config';
+import { doc, updateDoc } from 'firebase/firestore';
 
 export const EditProfile = () => {
+    const { name, token } = useAppSelector(state => state.auth);
+
     const [eye1, setEye1] = useState(true);
     const [eye2, setEye2] = useState(true);
+
+    const [clave1, setClave1] = useState("");
+    const [clave2, setClave2] = useState("");
+
+    const [nameProfile, setNameProfile] = useState(name);
+
+
+    const saveProfile = async () => {
+
+        if (clave1.trim() !== '') {
+            if (clave1.length < 6) {
+                alert('La contraseña tiene que tener mas de 6 digitos');
+            } else {
+                if (clave1 === clave2) {
+                    alert('Correcto');
+                } else {
+                    alert('Las contraseña no son iguales, intentalo de nuevo');
+                }
+            }
+        }
+
+        const updateProfile = doc(dbFirestore, 'usuarios', token);
+
+        await updateDoc(updateProfile, {
+            name: nameProfile,
+        });
+
+
+    }
+
 
     return (
         <View style={styles.container}>
@@ -17,6 +52,8 @@ export const EditProfile = () => {
                 <TextInput
                     style={GlobalStyle.input}
                     placeholder='Nombre'
+                    onChangeText={e => setNameProfile(e)}
+                    value={nameProfile}
                 />
             </View>
 
@@ -29,7 +66,7 @@ export const EditProfile = () => {
                     style={GlobalStyle.input}
                     placeholder='Contraseña'
                     secureTextEntry={eye1}
-                //   onChangeText={e => setPass(e)}
+                    onChangeText={e => setClave1(e)}
                 />
 
                 <TouchableOpacity style={styles.eyes} onPress={() => (eye1) ? setEye1(false) : setEye1(true)}>
@@ -48,7 +85,7 @@ export const EditProfile = () => {
                     style={GlobalStyle.input}
                     placeholder='Repetir contraseña'
                     secureTextEntry={eye2}
-                //   onChangeText={e => setPass(e)}
+                    onChangeText={e => setClave2(e)}
                 />
 
                 <TouchableOpacity style={styles.eyes} onPress={() => (eye2) ? setEye2(false) : setEye2(true)}>
@@ -60,7 +97,7 @@ export const EditProfile = () => {
                 </TouchableOpacity>
             </View>
 
-            <TouchableOpacity style={GlobalStyle.btnLogin}>
+            <TouchableOpacity style={GlobalStyle.btnLogin} onPress={() => saveProfile()}>
                 <Text style={GlobalStyle.txtLogin}>Guardar Cambios</Text>
             </TouchableOpacity>
 

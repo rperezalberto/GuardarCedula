@@ -46,6 +46,10 @@ const authSlice = createSlice({
         getDocument: (state, action) => {
             state.data.unshift(action.payload);
         },
+        getProfileInfo: (state, action) => {
+            state.email = action.payload.email;
+            state.name = action.payload.name;
+        },
         signOuts: (state) => {
             state.data = [];
             state.token = null;
@@ -57,5 +61,5 @@ const authSlice = createSlice({
     }
 });
 
-export const { home, singIn, signUp, dataUSer, getDocument, signOuts } = authSlice.actions;
+export const { home, singIn, signUp, dataUSer, getDocument, getProfileInfo, signOuts } = authSlice.actions;
 export default authSlice.reducer;
