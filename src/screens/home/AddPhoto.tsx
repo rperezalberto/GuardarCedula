@@ -7,9 +7,10 @@ import { dbStore, dbFirestore } from '../../firebase/config';
 import { doc, addDoc, collection } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { v4 } from 'uuid';
-import { useAppSelector } from '../../hook/hook';
+import { useAppSelector, useAppDispatch } from '../../hook/hook';
 import { LoadImg } from '../../util/Util';
 import { ActivityScreen } from '../activity/ActivityScreen';
+import { resetData } from '../../feacture/authSlice';
 
 
 
@@ -21,6 +22,7 @@ export const AddPhoto = ({ route }: any) => {
     const [urlCedula, setUrlCedula] = useState('');
 
     const { token } = useAppSelector(state => state.auth);
+    const dispatch = useAppDispatch();
 
     const uploadPhoto = async () => {
         if (title.trim() !== '') {
@@ -33,6 +35,7 @@ export const AddPhoto = ({ route }: any) => {
                 await getDownloadURL(storageRef)
                     .then(e => {
                         uploadImgTitle(e, nameImg);
+                        dispatch(resetData());
                     })
 
                 // uploadImgTitle(urlCedula);

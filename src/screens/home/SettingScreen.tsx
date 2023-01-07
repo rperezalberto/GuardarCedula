@@ -1,5 +1,5 @@
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
-import { getProfileInfo, signOuts } from '../../feacture/authSlice';
+import { getProfileInfo, resetData, signOuts } from '../../feacture/authSlice';
 import { useAppDispatch, useAppSelector } from '../../hook/hook';
 import { Foundation } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
@@ -60,7 +60,10 @@ export const SettingScreen = ({ navigation }: Props) => {
                 <Text style={{ fontSize: 14, fontWeight: '600' }}>Editar Perfil</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.containerMenu} onPress={() => navigation.navigate('UsersSetting')}>
+            <TouchableOpacity style={styles.containerMenu} onPress={() => {
+                dispatch(resetData());
+                navigation.navigate('UsersSetting');
+            }}>
                 <View style={[styles.containerIcon]}>
                     <Foundation name="torsos" size={20} color={colores.white} />
                 </View>

@@ -2,23 +2,23 @@ import { createSlice } from '@reduxjs/toolkit';
 import { signOut } from 'firebase/auth';
 import { dbAuth } from '../firebase/config';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { AuthData } from '../util/Util';
 
-interface AuthData {
-    name?: string,
-    email: string,
-    pass: string,
-    token: null,
-    createUserUser: string,
-}
 
-const initialState = {
+
+const initialState: AuthData = {
     name: '',
     email: '',
-    pass: '',
     token: null,
     createUserUser: '',
-    data: [],
-    dataID: [],
+    data: [
+        {
+            data: {
+            }
+        }
+    ],
+    users: [
+    ]
 }
 
 
@@ -50,8 +50,35 @@ const authSlice = createSlice({
             state.email = action.payload.email;
             state.name = action.payload.name;
         },
+        getUsers: (state, action) => {
+            state.users.unshift(action.payload);
+            // state.users = [];
+        },
+        resetData: (state) => {
+            state.data = [
+                {
+                    id: '',
+                    data: {
+                        title: '',
+                        tokenUser: '',
+                        urlCedula: ''
+                    }
+                }
+            ];
+            state.users = []
+        },
+
         signOuts: (state) => {
-            state.data = [];
+            state.data = [
+                {
+                    id: '',
+                    data: {
+                        title: '',
+                        tokenUser: '',
+                        urlCedula: ''
+                    }
+                }
+            ];
             state.token = null;
             // state.name = '';
             // state.createUserUser = '';
@@ -61,5 +88,5 @@ const authSlice = createSlice({
     }
 });
 
-export const { home, singIn, signUp, dataUSer, getDocument, getProfileInfo, signOuts } = authSlice.actions;
+export const { home, singIn, signUp, dataUSer, getDocument, getProfileInfo, getUsers, resetData, signOuts } = authSlice.actions;
 export default authSlice.reducer;

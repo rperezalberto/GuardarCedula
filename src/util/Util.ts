@@ -16,3 +16,28 @@ export const LoadImg = async (uri: string) => {
     return blob;
 }
 
+export interface AuthData {
+    name?: string;
+    email: string;
+    token: null;
+    createUserUser: string;
+    data: [
+        {
+            id?: string;
+            data: {
+                title?: string;
+                tokenUser?: string;
+                urlCedula?: string
+            }
+        }
+    ],
+    users: [
+        // {
+        //     id?: string;
+        //     name?: string;
+        //     email?: string;
+        //     createUser?: string
+        // }
+    ]
+}
+

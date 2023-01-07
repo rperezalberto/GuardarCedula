@@ -3,12 +3,14 @@ import { TabsNavigation } from './TabsNavigation';
 import { colores } from '../theme/Colores';;
 import { EditProfile } from '../screens/setting/EditProfile';
 import { UsersSetting } from '../screens/setting/UsersSetting';
+import { AddPhoto } from "../screens/home/AddPhoto";
 
 
 export type RootStack = {
     HomeScreen: undefined,
     EditProfile: undefined
     UsersSetting: undefined
+    AddPhoto: undefined
 }
 
 
@@ -49,11 +51,17 @@ export const StackGlobal = () => {
                 }}
             />
 
-
-
             <Stack.Screen
                 name="UsersSetting"
                 component={UsersSetting}
+                options={{
+                    title: "Usuarios",
+                    headerShown: true,
+                }}
+            />
+            <Stack.Screen
+                name="AddPhoto"
+                component={AddPhoto}
                 options={{
                     title: "Usuarios",
                     headerShown: true,

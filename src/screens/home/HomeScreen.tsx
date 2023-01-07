@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { View, Text, FlatList, StyleSheet, useWindowDimensions, Image, TouchableOpacity } from 'react-native';
 import { useAppDispatch, useAppSelector } from '../../hook/hook';
 import { colores } from '../../theme/Colores';
@@ -8,7 +8,7 @@ import { BtnAdd } from '../../components/BtnAdd';
 import * as ImagePicker from 'expo-image-picker';
 import { collection, onSnapshot } from 'firebase/firestore';
 import { dbFirestore } from '../../firebase/config';
-import { getDocument } from '../../feacture/authSlice';
+import { getDocument, resetData } from '../../feacture/authSlice';
 
 
 
@@ -62,6 +62,15 @@ export const HomeScreen = ({ navigation }: Props) => {
         )
     }
 
+    const getDocuments = () => {
+        onSnapshot(collection(dbFirestore, `cedulaInfo`), (document) => {
+            document.forEach(item => {
+                dispatch(getDocument({ data: item.data(), id: item.id }));
+            });
+        })
+    }
+
+    // const getData = useMemo(() => getDocuments(), []);
 
     useEffect(() => {
         const getDocuments = () => {

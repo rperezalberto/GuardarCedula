@@ -7,9 +7,8 @@ import { StackScreenProps } from '@react-navigation/stack';
 
 
 
-interface Props extends StackScreenProps<any, any> { };
 
-export const AlertComponent = (item: any, { navigation }: Props) => {
+export const AlertComponent = (item: any, navigation: any) => {
 
     const deleteImg = async () => {
         const desertRef = ref(dbStore, `cedulaInfo/${item.data.nameImg}`);

@@ -3,6 +3,12 @@ import { colores } from './Colores';
 
 
 export const GlobalStyle = StyleSheet.create({
+  txtTitleHeader: {
+    fontSize: 25,
+    fontWeight: '600',
+    alignSelf: 'center',
+    marginVertical: 20,
+  },
   txtTitle: {
     fontSize: 40,
     fontWeight: '500',

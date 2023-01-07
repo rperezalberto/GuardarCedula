@@ -45,7 +45,7 @@ export const EditProfile = () => {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.txtTitle}> Editar informacion del perfil</Text>
+            <Text style={GlobalStyle.txtTitleHeader}> Editar informacion del perfil</Text>
 
             <View>
                 <Text>Nombre del usuario:</Text>
@@ -57,7 +57,7 @@ export const EditProfile = () => {
                 />
             </View>
 
-            <Text style={styles.txtTitle}>Cambiar contraseña</Text>
+            <Text style={GlobalStyle.txtTitleHeader}>Cambiar contraseña</Text>
 
 
             <View>
@@ -109,12 +109,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         marginHorizontal: 10
-    },
-    txtTitle: {
-        fontSize: 25,
-        fontWeight: '600',
-        alignSelf: 'center',
-        marginVertical: 20,
     },
     eyes: {
         position: 'absolute',
