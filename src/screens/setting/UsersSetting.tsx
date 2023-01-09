@@ -28,6 +28,7 @@ export const UsersSetting = () => {
         onSnapshot(collection(dbFirestore, 'usuarios'), (document) => {
             document.forEach((item) => {
                 dispatch(getUsers(item.data()));
+                // console.log(item.data());
             })
         })
     }
@@ -35,9 +36,7 @@ export const UsersSetting = () => {
 
     const getUsersData = useMemo(() => getProfileExist(), []);
 
-    // useEffect(() => {
-    //     getProfileExist();
-    // }, []);
+
 
 
     const renderItemUser = (item: IfoUser) => {
@@ -52,10 +51,10 @@ export const UsersSetting = () => {
                     />
                 )}
 
-                rightContent={(reset) => (
+                rightContent={() => (
                     <Button
                         title="Eliminar"
-                        onPress={() => reset()}
+                        // onPress={() => reset()}
                         icon={{ name: 'delete', color: 'white' }}
                         buttonStyle={{ minHeight: '100%', backgroundColor: colores.delete }}
                     />

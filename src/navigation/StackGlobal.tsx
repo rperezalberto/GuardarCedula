@@ -4,13 +4,15 @@ import { colores } from '../theme/Colores';;
 import { EditProfile } from '../screens/setting/EditProfile';
 import { UsersSetting } from '../screens/setting/UsersSetting';
 import { AddPhoto } from "../screens/home/AddPhoto";
+import { AddUser } from '../screens/setting/AddUser';
 
 
 export type RootStack = {
-    HomeScreen: undefined,
+    HomeScreen: undefined
     EditProfile: undefined
     UsersSetting: undefined
     AddPhoto: undefined
+    AddUser: undefined
 }
 
 
@@ -64,6 +66,15 @@ export const StackGlobal = () => {
                 component={AddPhoto}
                 options={{
                     title: "Usuarios",
+                    headerShown: true,
+                }}
+            />
+
+            <Stack.Screen
+                name="AddUser"
+                component={AddUser}
+                options={{
+                    title: "Agregar Usuarios",
                     headerShown: true,
                 }}
             />

@@ -49,10 +49,10 @@ const authSlice = createSlice({
         getProfileInfo: (state, action) => {
             state.email = action.payload.email;
             state.name = action.payload.name;
+            state.users = [];
         },
         getUsers: (state, action) => {
-            state.users.unshift(action.payload);
-            // state.users = [];
+            state.users.push(action.payload);
         },
         resetData: (state) => {
             state.data = [
@@ -65,7 +65,10 @@ const authSlice = createSlice({
                     }
                 }
             ];
-            state.users = []
+        },
+
+        resetUserList: (state) => {
+            state.users = [];
         },
 
         signOuts: (state) => {
@@ -80,13 +83,23 @@ const authSlice = createSlice({
                 }
             ];
             state.token = null;
-            // state.name = '';
-            // state.createUserUser = '';
+            state.users = [];
             AsyncStorage.removeItem('@token');
             signOut(dbAuth);
         }
     }
 });
 
-export const { home, singIn, signUp, dataUSer, getDocument, getProfileInfo, getUsers, resetData, signOuts } = authSlice.actions;
+export const {
+    home,
+    singIn,
+    signUp,
+    dataUSer,
+    getDocument,
+    getProfileInfo,
+    getUsers,
+    resetData,
+    resetUserList,
+    signOuts
+} = authSlice.actions;
 export default authSlice.reducer;

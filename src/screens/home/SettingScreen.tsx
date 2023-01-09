@@ -1,11 +1,11 @@
+import { useMemo } from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
-import { getProfileInfo, resetData, signOuts } from '../../feacture/authSlice';
+import { getProfileInfo, resetData, resetUserList, signOuts } from '../../feacture/authSlice';
 import { useAppDispatch, useAppSelector } from '../../hook/hook';
 import { Foundation } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
 import { colores } from '../../theme/Colores';
 import { StackScreenProps } from '@react-navigation/stack';
-import { useEffect } from 'react';
 import { dbFirestore } from '../../firebase/config';
 import { doc, onSnapshot } from 'firebase/firestore';
 
@@ -23,9 +23,12 @@ export const SettingScreen = ({ navigation }: Props) => {
         })
     }
 
-    useEffect(() => {
-        getInfoProfile();
-    }), [];
+
+    const userInfo = useMemo(() => getInfoProfile(), []);
+
+    // useEffect(() => {
+    //     getInfoProfile();
+    // }), [];
 
 
     return (
@@ -61,7 +64,7 @@ export const SettingScreen = ({ navigation }: Props) => {
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.containerMenu} onPress={() => {
-                dispatch(resetData());
+                dispatch(resetUserList());
                 navigation.navigate('UsersSetting');
             }}>
                 <View style={[styles.containerIcon]}>
@@ -70,7 +73,7 @@ export const SettingScreen = ({ navigation }: Props) => {
                 <Text style={{ fontSize: 14, fontWeight: '600' }}>Usuarios</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.containerMenu}>
+            <TouchableOpacity style={styles.containerMenu} onPress={() => navigation.navigate('AddUser')}>
                 <View style={[styles.containerIcon]}>
                     <Foundation name="torsos" size={20} color={colores.white} />
                 </View>
@@ -91,18 +94,12 @@ export const SettingScreen = ({ navigation }: Props) => {
                 <Text style={{ fontSize: 14, fontWeight: '600' }}>Términos y Condiciones</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.containerMenu}>
+            <TouchableOpacity style={styles.containerMenu} onPress={() => dispatch(signOuts())}>
                 <View style={[styles.containerIcon, { backgroundColor: colores.delete }]}>
                     <FontAwesome name="sign-in" size={20} color={colores.white} />
                 </View>
                 <Text style={{ fontSize: 14, fontWeight: '600' }}>Cerrar Sesión</Text>
             </TouchableOpacity>
-
-
-            {/* <Button
-                title='Sign Up'
-                onPress={() => dispatch(signOuts())}
-            /> */}
         </View>
     )
 }
