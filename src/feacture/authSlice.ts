@@ -6,19 +6,13 @@ import { AuthData } from '../util/Util';
 
 
 
-const initialState: AuthData = {
+const initialState = {
     name: '',
     email: '',
     token: null,
     createUserUser: '',
-    data: [
-        {
-            data: {
-            }
-        }
-    ],
-    users: [
-    ]
+    data: [],
+    users: []
 }
 
 
@@ -49,22 +43,13 @@ const authSlice = createSlice({
         getProfileInfo: (state, action) => {
             state.email = action.payload.email;
             state.name = action.payload.name;
-            state.users = [];
+            // state.users = [];
         },
         getUsers: (state, action) => {
             state.users.push(action.payload);
         },
         resetData: (state) => {
-            state.data = [
-                {
-                    id: '',
-                    data: {
-                        title: '',
-                        tokenUser: '',
-                        urlCedula: ''
-                    }
-                }
-            ];
+            state.data = [];
         },
 
         resetUserList: (state) => {
@@ -72,16 +57,7 @@ const authSlice = createSlice({
         },
 
         signOuts: (state) => {
-            state.data = [
-                {
-                    id: '',
-                    data: {
-                        title: '',
-                        tokenUser: '',
-                        urlCedula: ''
-                    }
-                }
-            ];
+            state.data = [];
             state.token = null;
             state.users = [];
             AsyncStorage.removeItem('@token');

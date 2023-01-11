@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useEffect } from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { getProfileInfo, resetData, resetUserList, signOuts } from '../../feacture/authSlice';
 import { useAppDispatch, useAppSelector } from '../../hook/hook';
@@ -7,7 +7,7 @@ import { FontAwesome } from '@expo/vector-icons';
 import { colores } from '../../theme/Colores';
 import { StackScreenProps } from '@react-navigation/stack';
 import { dbFirestore } from '../../firebase/config';
-import { doc, onSnapshot } from 'firebase/firestore';
+import { doc, onSnapshot, getDoc } from 'firebase/firestore';
 
 
 interface Props extends StackScreenProps<any, any> { };
@@ -17,18 +17,22 @@ export const SettingScreen = ({ navigation }: Props) => {
     const dispatch = useAppDispatch();
     const { token, name, email } = useAppSelector(state => state.auth);
 
-    const getInfoProfile = () => {
-        onSnapshot(doc(dbFirestore, `usuarios/${token}`), (doc) => {
-            dispatch(getProfileInfo(doc.data()));
-        })
+    const getInfoProfile = async () => {
+        const docRef = doc(dbFirestore, `usuarios/${token}`);
+
+        const docSnap = await getDoc(docRef)
+        if (docSnap.exists()) {
+            dispatch(getProfileInfo(docSnap.data()));
+        }
+
     }
 
 
-    const userInfo = useMemo(() => getInfoProfile(), []);
+    // const userInfo = useMemo(() => getInfoProfile(), []);
 
-    // useEffect(() => {
-    //     getInfoProfile();
-    // }), [];
+    useEffect(() => {
+        getInfoProfile();
+    }), [];
 
 
     return (

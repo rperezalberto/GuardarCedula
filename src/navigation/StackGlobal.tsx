@@ -5,6 +5,8 @@ import { EditProfile } from '../screens/setting/EditProfile';
 import { UsersSetting } from '../screens/setting/UsersSetting';
 import { AddPhoto } from "../screens/home/AddPhoto";
 import { AddUser } from '../screens/setting/AddUser';
+import { InfoDocScreen } from '../screens/home/InfoDocScreen';
+import { InfUser } from '../screens/setting/InfUser';
 
 
 export type RootStack = {
@@ -13,6 +15,8 @@ export type RootStack = {
     UsersSetting: undefined
     AddPhoto: undefined
     AddUser: undefined
+    InfoDocumento: undefined
+    InfUser: undefined
 }
 
 
@@ -78,6 +82,26 @@ export const StackGlobal = () => {
                     headerShown: true,
                 }}
             />
+
+            <Stack.Screen
+                name="InfoDocumento"
+                component={InfoDocScreen}
+                options={{
+                    title: "Agregar Usuarios",
+                    headerShown: true,
+                }}
+            />
+
+            <Stack.Screen
+                name="InfUser"
+                component={InfUser}
+                options={{
+                    title: "Agregar Usuarios",
+                    headerShown: true,
+                }}
+            />
+
+
 
         </Stack.Navigator>
     )

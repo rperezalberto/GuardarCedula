@@ -36,7 +36,7 @@ export const SignUp = ({ navigation }: Props) => {
         await createUserWithEmailAndPassword(dbAuth, email, pass)
           .then(e => {
             dispatch(signUp({ name, email }));
-            navigation.navigate('Home');
+            navigation.navigate('SignIn');
           })
           .catch(e => {
             alert('Usuario a existe');

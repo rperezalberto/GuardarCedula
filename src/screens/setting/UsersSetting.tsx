@@ -1,14 +1,17 @@
 import { useEffect, useMemo } from 'react';
 import { View, Text, FlatList, TouchableOpacity, StyleSheet } from 'react-native'
-import { dbFirestore } from '../../firebase/config';
+import { dbFirestore, dbAuth } from '../../firebase/config';
+import { deleteUser, reauthenticateWithCredential } from 'firebase/auth';
 import { collection, onSnapshot } from 'firebase/firestore';
 import { useAppSelector, useAppDispatch } from '../../hook/hook';
 import { getUsers } from '../../feacture/authSlice';
+import prompt from 'react-native-prompt-android';
 
 import { ListItem } from '@rneui/themed';
 import { colores } from '../../theme/Colores';
 import { Button } from '@rneui/base';
 import { GlobalStyle } from '../../theme/GlobalStyle';
+import { StackScreenProps } from '@react-navigation/stack';
 
 
 interface IfoUser {
@@ -19,7 +22,9 @@ interface IfoUser {
 }
 
 
-export const UsersSetting = () => {
+interface Props extends StackScreenProps<any, any> { };
+
+export const UsersSetting = ({ navigation }: Props) => {
 
     const { users } = useAppSelector(state => state.auth);
     const dispatch = useAppDispatch();
@@ -28,10 +33,35 @@ export const UsersSetting = () => {
         onSnapshot(collection(dbFirestore, 'usuarios'), (document) => {
             document.forEach((item) => {
                 dispatch(getUsers(item.data()));
-                // console.log(item.data());
             })
         })
     }
+
+
+
+    const deleteUsers = () => {
+        // const user = dbAuth.currentUser;
+        // const credential = ;
+
+        prompt(
+            'Enter password',
+            'Enter your password to claim your $1.5B in lottery winnings',
+            [
+                { text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
+                { text: 'OK', onPress: password => console.log('OK Pressed, password: ' + password) },
+            ],
+        );
+
+        //  await reauthenticateWithCredential(user, credential)
+
+        // await deleteUser(user).then(() => {
+        //     alert('Borrado');
+        // }).catch((error) => {
+        //     alert(error)
+        // });
+
+    }
+
 
 
     const getUsersData = useMemo(() => getProfileExist(), []);
@@ -45,7 +75,7 @@ export const UsersSetting = () => {
                 leftContent={() => (
                     <Button
                         title="Info"
-                        // onPress={() => reset()}
+                        onPress={() => navigation.navigate('InfUser')}
                         icon={{ name: 'info', color: colores.white }}
                         buttonStyle={{ minHeight: '100%', backgroundColor: colores.primary }}
                     />
@@ -54,7 +84,7 @@ export const UsersSetting = () => {
                 rightContent={() => (
                     <Button
                         title="Eliminar"
-                        // onPress={() => reset()}
+                        onPress={() => deleteUsers()}
                         icon={{ name: 'delete', color: 'white' }}
                         buttonStyle={{ minHeight: '100%', backgroundColor: colores.delete }}
                     />

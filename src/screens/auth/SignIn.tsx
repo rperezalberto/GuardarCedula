@@ -37,7 +37,7 @@ export const SignIn = ({ navigation }: Props) => {
         await signInWithEmailAndPassword(dbAuth, email, pass)
           .then(e => {
             const token = e.user.uid;
-            // dispatch(home(token));
+            dispatch(home(token));
             AsyncStorage.setItem('@token', token);
           })
       } else {
@@ -71,7 +71,7 @@ export const SignIn = ({ navigation }: Props) => {
 
     if (value) {
       dispatch(home(value));
-      signHome();
+      // signHome();
     }
   }
 

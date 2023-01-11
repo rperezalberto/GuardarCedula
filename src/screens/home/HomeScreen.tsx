@@ -19,7 +19,7 @@ export const HomeScreen = ({ navigation }: Props) => {
     const { width } = useWindowDimensions();
 
     const dispatch = useAppDispatch();
-    const { data, dataID } = useAppSelector(state => state.auth);
+    const { data } = useAppSelector(state => state.auth);
 
     const wid = (width / 3) - 2;
 
@@ -89,7 +89,6 @@ export const HomeScreen = ({ navigation }: Props) => {
         <>
             <FlatList
                 data={data}
-                extraData={dataID}
                 ListHeaderComponent={() => _headerList()}
                 renderItem={({ item }) => renderList(item)}
                 numColumns={3}
