@@ -6,10 +6,11 @@ import { colores } from '../../theme/Colores';
 import { useAppSelector } from '../../hook/hook';
 import { dbFirestore } from '../../firebase/config';
 import { doc, updateDoc } from 'firebase/firestore';
+import { ActivityScreen } from '../activity/ActivityScreen';
 
 export const EditProfile = () => {
     const { name, token } = useAppSelector(state => state.auth);
-
+    const [isLoad, setIsLoad] = useState(false);
     const [eye1, setEye1] = useState(true);
     const [eye2, setEye2] = useState(true);
 
@@ -34,13 +35,20 @@ export const EditProfile = () => {
         }
 
         const updateProfile = doc(dbFirestore, 'usuarios', token);
-
+        setIsLoad(true);
         await updateDoc(updateProfile, {
             name: nameProfile,
-        });
+        })
+            .then(() => {
+                alert('Modificado correcctamente');
+            })
+        setIsLoad(false);
 
 
     }
+
+    if (isLoad) return <ActivityScreen />
+
 
 
     return (
