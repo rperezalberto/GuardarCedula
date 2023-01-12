@@ -1,5 +1,5 @@
-import React from 'react'
-import { View, Text, Image, StyleSheet, TouchableOpacity, Alert } from 'react-native';
+import { useState } from 'react'
+import { View, Text, Image, StyleSheet, TouchableOpacity, Alert, Share, } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import { colores } from '../../theme/Colores';
 import { GlobalStyle } from '../../theme/GlobalStyle';
@@ -10,19 +10,16 @@ import { resetData } from '../../feacture/authSlice';
 import { dbFirestore, dbStore } from '../../firebase/config';
 import { doc, deleteDoc } from 'firebase/firestore';
 import { deleteObject, ref, getDownloadURL } from 'firebase/storage';
-import { async } from '@firebase/util';
+import * as FileSystem from 'expo-file-system';
+import * as MediaLibrary from 'expo-media-library';
+import { ActivityScreen } from '../activity/ActivityScreen';
 
 export const InfoDocScreen = ({ route, navigation }: any) => {
 
     const dateInfo = route.params;
-    const dateInfoCedula = route;
+    const [isLoad, setIsLoad] = useState(false);
 
-    // const navigation = useNavigation();
     const dispatch = useAppDispatch();
-
-
-
-
 
     const AlertComponent = (item: any) => {
 
@@ -60,17 +57,45 @@ export const InfoDocScreen = ({ route, navigation }: any) => {
 
 
     const DownloadImg = async () => {
-        const id = dateInfo.data.urlCedula;
+        const nameImg = dateInfo.data.nameImg;
 
-        // console.log(dateInfo.data.urlCedula);
-
-        const starRef = ref(dbStore, id);
+        const starRef = ref(dbStore, `cedulaInfo/${nameImg}`);
         await getDownloadURL(starRef)
             .then(url => {
-                alert('Imagen descargada');
+                getUrlImg(url);
             })
     }
 
+
+    const getUrlImg = async (url: any) => {
+        let permission = await MediaLibrary.requestPermissionsAsync();
+
+        if (permission.status !== 'granted') {
+            await MediaLibrary.requestPermissionsAsync();
+        } else {
+            setIsLoad(true);
+            FileSystem.downloadAsync(url, FileSystem.documentDirectory + `${dateInfo.data.title}.png`)
+                .then(({ uri }) => {
+                    console.log('Finished downloading to ', uri);
+                    creteAlbum(uri);
+
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+
+        }
+    }
+
+    const creteAlbum = async (uri: string) => {
+
+        const asset = await MediaLibrary.createAssetAsync(uri);
+        await MediaLibrary.createAlbumAsync('Cedulas', asset, false);
+        setIsLoad(false);
+        alert('Cedula descargada, revice la galeria');
+    }
+
+    if (isLoad) return <ActivityScreen />
 
 
     return (
