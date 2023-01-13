@@ -11,15 +11,19 @@ import { useAppSelector, useAppDispatch } from '../../hook/hook';
 import { LoadImg } from '../../util/Util';
 import { ActivityScreen } from '../activity/ActivityScreen';
 import { resetData } from '../../feacture/authSlice';
+import { StackScreenProps } from '@react-navigation/stack';
 
 
+interface Props extends StackScreenProps<any, any> { };
 
-export const AddPhoto = ({ route }: any) => {
+export const AddPhoto = ({ route }: any, { navigation }: Props) => {
     const urlTmp = route.params[0].uri;
+
+
+    // console.log(urlTmp);
 
     const [title, setTitle] = useState('');
     const [isLoad, setIsLoad] = useState(false);
-    const [urlCedula, setUrlCedula] = useState('');
 
     const { token } = useAppSelector(state => state.auth);
     const dispatch = useAppDispatch();
@@ -31,11 +35,13 @@ export const AddPhoto = ({ route }: any) => {
                 const url = await LoadImg(urlTmp);
                 const nameImg = v4();
                 const storageRef = ref(dbStore, 'cedulaInfo/' + nameImg);
+                console.log(storageRef);
                 await uploadBytes(storageRef, url);
                 await getDownloadURL(storageRef)
                     .then(e => {
                         uploadImgTitle(e, nameImg);
                         dispatch(resetData());
+                        console.log('Subido')
                     })
 
                 // uploadImgTitle(urlCedula);
@@ -49,15 +55,18 @@ export const AddPhoto = ({ route }: any) => {
     }
 
 
-    const uploadImgTitle = (e: string, nameImg: string) => {
+    const uploadImgTitle = async (e: string, nameImg: string) => {
         const refDocument = collection(dbFirestore, 'cedulaInfo');
 
-        addDoc(refDocument, {
+        await addDoc(refDocument, {
             title,
             urlCedula: e,
             tokenUser: token,
             nameImg
         })
+            .then(() => {
+                navigation.navigate('HomeScreen')
+            })
     }
 
 

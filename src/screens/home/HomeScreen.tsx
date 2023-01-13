@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react';
+import { useEffect } from 'react';
 import { View, Text, FlatList, StyleSheet, useWindowDimensions, Image, TouchableOpacity } from 'react-native';
 import { useAppDispatch, useAppSelector } from '../../hook/hook';
 import { colores } from '../../theme/Colores';
@@ -8,13 +8,13 @@ import { BtnAdd } from '../../components/BtnAdd';
 import * as ImagePicker from 'expo-image-picker';
 import { collection, onSnapshot } from 'firebase/firestore';
 import { dbFirestore } from '../../firebase/config';
-import { getDocument, resetData } from '../../feacture/authSlice';
-
-
+import { getDocument } from '../../feacture/authSlice';
+// import config from '../../../config';
 
 interface Props extends StackScreenProps<any, any> { };
 
 export const HomeScreen = ({ navigation }: Props) => {
+
 
     const { width } = useWindowDimensions();
 
@@ -26,6 +26,19 @@ export const HomeScreen = ({ navigation }: Props) => {
     const AddPhoto = async () => {
         // No permissions request is necessary for launching the image library
         let result = await ImagePicker.launchCameraAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsEditing: true,
+            quality: 1,
+        });
+        if (!result.canceled) {
+            const urlTemp = result.assets;
+            navigation.navigate('AddPhoto', urlTemp);
+        }
+    }
+
+    const addGalery = async () => {
+        // No permissions request is necessary for launching the image library
+        let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
             allowsEditing: true,
             quality: 1,
@@ -62,13 +75,13 @@ export const HomeScreen = ({ navigation }: Props) => {
         )
     }
 
-    const getDocuments = () => {
-        onSnapshot(collection(dbFirestore, `cedulaInfo`), (document) => {
-            document.forEach(item => {
-                dispatch(getDocument({ data: item.data(), id: item.id }));
-            });
-        })
-    }
+    // const getDocuments = () => {
+    //     onSnapshot(collection(dbFirestore, `cedulaInfo`), (document) => {
+    //         document.forEach(item => {
+    //             dispatch(getDocument({ data: item.data(), id: item.id }));
+    //         });
+    //     })
+    // }
 
     // const getData = useMemo(() => getDocuments(), []);
 
@@ -94,7 +107,12 @@ export const HomeScreen = ({ navigation }: Props) => {
                 numColumns={3}
                 scrollEnabled={true}
             />
-            <BtnAdd icon='camera-alt' size={24} color='#FFF' onPress={() => AddPhoto()} />
+            <View style={{ position: 'absolute', bottom: 80, right: 0 }}>
+                <BtnAdd icon='image' size={24} color='#FFF' onPress={() => addGalery()} />
+            </View>
+            <View>
+                <BtnAdd icon='camera-alt' size={24} color='#FFF' onPress={() => AddPhoto()} />
+            </View>
         </>
     )
 }

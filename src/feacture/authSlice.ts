@@ -12,7 +12,14 @@ const initialState = {
     token: null,
     createUserUser: '',
     data: [],
-    users: []
+    users: [],
+    dataSearch: {
+        title: null,
+        nameImg: null,
+        tokenUser: null,
+        urlCedula: null,
+        id: null
+    }
 }
 
 
@@ -55,7 +62,13 @@ const authSlice = createSlice({
         resetUserList: (state) => {
             state.users = [];
         },
-
+        resultSearch: (state, action) => {
+            state.dataSearch.id = action.payload.id;
+            state.dataSearch.title = action.payload.title;
+            state.dataSearch.nameImg = action.payload.nameImg;
+            state.dataSearch.tokenUser = action.payload.tokenUser;
+            state.dataSearch.urlCedula = action.payload.urlCedula;
+        },
         signOuts: (state) => {
             state.data = [];
             state.token = null;
@@ -76,6 +89,7 @@ export const {
     getUsers,
     resetData,
     resetUserList,
+    resultSearch,
     signOuts
 } = authSlice.actions;
 export default authSlice.reducer;

@@ -4,11 +4,13 @@ import { SearchScreen } from '../screens/home/SearchScreen';
 import { SettingScreen } from '../screens/home/SettingScreen';
 import { MaterialIcons } from '@expo/vector-icons';
 import { colores } from '../theme/Colores';
+import { useAppDispatch } from '../hook/hook';
 
 const Tabs = createBottomTabNavigator();
 
 
 export const TabsNavigation = () => {
+    const dispatch = useAppDispatch();
     return (
         <Tabs.Navigator
             screenOptions={{

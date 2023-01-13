@@ -41,10 +41,10 @@ export const StackGlobal = () => {
             <Stack.Screen
                 name="HomeScreen"
                 component={TabsNavigation}
-            // options={{
-            //     title: "Cédulas",
-            //     headerRight: () => <MenuComponents />
-            // }}
+                options={{
+                    title: "Cédulas",
+                    // headerRight: () => <MenuComponents />
+                }}
             />
 
             <Stack.Screen
@@ -87,7 +87,7 @@ export const StackGlobal = () => {
                 name="InfoDocumento"
                 component={InfoDocScreen}
                 options={{
-                    title: "Agregar Usuarios",
+                    title: "Informacion de la Cédula",
                     headerShown: true,
                 }}
             />
@@ -96,7 +96,7 @@ export const StackGlobal = () => {
                 name="InfUser"
                 component={InfUser}
                 options={{
-                    title: "Agregar Usuarios",
+                    title: "Usuario",
                     headerShown: true,
                 }}
             />

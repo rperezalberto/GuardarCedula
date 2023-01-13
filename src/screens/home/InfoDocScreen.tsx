@@ -4,7 +4,6 @@ import { AntDesign } from '@expo/vector-icons';
 import { colores } from '../../theme/Colores';
 import { GlobalStyle } from '../../theme/GlobalStyle';
 // import { AlertComponent } from '../../components/AlertComponent';
-import { useNavigation } from '@react-navigation/native';
 import { useAppDispatch } from '../../hook/hook';
 import { resetData } from '../../feacture/authSlice';
 import { dbFirestore, dbStore } from '../../firebase/config';
@@ -17,14 +16,17 @@ import { ActivityScreen } from '../activity/ActivityScreen';
 export const InfoDocScreen = ({ route, navigation }: any) => {
 
     const dateInfo = route.params;
+    const dataSearch = route.params;
+
     const [isLoad, setIsLoad] = useState(false);
 
     const dispatch = useAppDispatch();
 
     const AlertComponent = (item: any) => {
 
+
         const deleteImg = async () => {
-            const desertRef = ref(dbStore, `cedulaInfo/${item.data.nameImg}`);
+            const desertRef = ref(dbStore, `cedulaInfo/${(dateInfo.data) ? item.data.nameImg : dataSearch.nameImg}`);
             await deleteObject(desertRef)
                 .then(() => {
                     deletTitle();
@@ -33,14 +35,14 @@ export const InfoDocScreen = ({ route, navigation }: any) => {
         }
 
         const deletTitle = async () => {
-            await deleteDoc(doc(dbFirestore, `cedulaInfo/${item.id}`))
+            await deleteDoc(doc(dbFirestore, `cedulaInfo/${(dateInfo.data) ? item.id : dataSearch.id}`))
                 .then(() => navigation.navigate('HomeScreen'));
         }
 
 
         Alert.alert(
             'Borrar',
-            `Estas seguro que quiere a borrar ${item.data.title}?`,
+            `Estas seguro que quiere a borrar ${(dateInfo.data) ? item.data.title : dataSearch.title}?`,
             [
                 {
                     text: 'Cancelar',
@@ -57,7 +59,7 @@ export const InfoDocScreen = ({ route, navigation }: any) => {
 
 
     const DownloadImg = async () => {
-        const nameImg = dateInfo.data.nameImg;
+        const nameImg = dateInfo.data ? dateInfo.data.nameImg : dateInfo.nameImg;
 
         const starRef = ref(dbStore, `cedulaInfo/${nameImg}`);
         await getDownloadURL(starRef)
@@ -74,7 +76,7 @@ export const InfoDocScreen = ({ route, navigation }: any) => {
             await MediaLibrary.requestPermissionsAsync();
         } else {
             setIsLoad(true);
-            FileSystem.downloadAsync(url, FileSystem.documentDirectory + `${dateInfo.data.title}.png`)
+            FileSystem.downloadAsync(url, FileSystem.documentDirectory + `${dateInfo.data ? dateInfo.data.title : dateInfo.title}.png`)
                 .then(({ uri }) => {
                     console.log('Finished downloading to ', uri);
                     creteAlbum(uri);
@@ -102,9 +104,9 @@ export const InfoDocScreen = ({ route, navigation }: any) => {
         <View style={styles.container}>
             <Image
                 style={styles.img}
-                source={{ uri: dateInfo.data.urlCedula }}
+                source={{ uri: (dateInfo.data) ? dateInfo.data.urlCedula : dataSearch.urlCedula }}
             />
-            <Text style={GlobalStyle.txtTitle}>{dateInfo.data.title}</Text>
+            <Text style={GlobalStyle.txtTitle}>{(dateInfo.data) ? dateInfo.data.title : dataSearch.title}</Text>
 
             <View style={{ flexDirection: 'row', marginVertical: 20 }}>
                 <TouchableOpacity style={[styles.btn, { backgroundColor: colores.primary }]} onPress={() => DownloadImg()}>
