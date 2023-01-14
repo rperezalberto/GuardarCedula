@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, TextInput, SafeAreaView, Imag
 import { useAppSelector, useAppDispatch } from '../../hook/hook';
 import { AntDesign } from '@expo/vector-icons';
 import { colores } from '../../theme/Colores';
-// import { CanvasComponent } from '../../components/CanvasComponent';
+import { CanvasComponent } from '../../components/CanvasComponent';
 import { GlobalStyle } from '../../theme/GlobalStyle';
 import { StackScreenProps } from '@react-navigation/stack';
 import { dbFirestore, dbAuth } from '../../firebase/config';
@@ -11,7 +11,7 @@ import { onAuthStateChanged, signInWithEmailAndPassword } from 'firebase/auth';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
 import { ActivityScreen } from '../activity/ActivityScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { home, dataUSer } from '../../feacture/authSlice';
+import { home, dataUSer, setToken } from '../../feacture/authSlice';
 
 interface Props extends StackScreenProps<any, any> { };
 // interface userData {
@@ -37,7 +37,8 @@ export const SignIn = ({ navigation }: Props) => {
         await signInWithEmailAndPassword(dbAuth, email, pass)
           .then(e => {
             const token = e.user.uid;
-            dispatch(home(token));
+            // dispatch(home(token));
+            validarPrivilegio(token)
             AsyncStorage.setItem('@token', token);
           })
       } else {
@@ -70,11 +71,29 @@ export const SignIn = ({ navigation }: Props) => {
     const value = await AsyncStorage.getItem('@token');
 
     if (value) {
-      dispatch(home(value));
+      dispatch(setToken(value));
       // signHome();
     }
   }
 
+
+  const validarPrivilegio = async (id: any) => {
+
+    const docRef = doc(dbFirestore, 'usuarios', id);
+
+    const docSnap = await getDoc(docRef);
+    const data = docSnap.data();
+
+    dispatch(home({
+      id: data.id,
+      name: data.name,
+      email: data.email,
+      privilegio: data.privilegio
+    })
+    );
+    // console.log(dataUser);
+    console.log(docSnap.data());
+  }
 
 
   const SignInCreateData = async (dataUser: any) => {
@@ -121,7 +140,7 @@ export const SignIn = ({ navigation }: Props) => {
         <Text style={{ color: colores.white }}>¡Bienvenido de nuevo!</Text>
       </View>
 
-      {/* <CanvasComponent /> */}
+      <CanvasComponent />
 
       <View style={styles.container}>
         <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginVertical: 20 }}>

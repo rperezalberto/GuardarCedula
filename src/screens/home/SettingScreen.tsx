@@ -1,4 +1,4 @@
-import { useMemo, useEffect } from 'react';
+import { useEffect } from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { getProfileInfo, resetData, resetUserList, signOuts } from '../../feacture/authSlice';
 import { useAppDispatch, useAppSelector } from '../../hook/hook';
@@ -7,7 +7,7 @@ import { FontAwesome } from '@expo/vector-icons';
 import { colores } from '../../theme/Colores';
 import { StackScreenProps } from '@react-navigation/stack';
 import { dbFirestore } from '../../firebase/config';
-import { doc, onSnapshot, getDoc } from 'firebase/firestore';
+import { doc, getDoc } from 'firebase/firestore';
 
 
 interface Props extends StackScreenProps<any, any> { };
@@ -15,7 +15,7 @@ interface Props extends StackScreenProps<any, any> { };
 export const SettingScreen = ({ navigation }: Props) => {
 
     const dispatch = useAppDispatch();
-    const { token, name, email } = useAppSelector(state => state.auth);
+    const { token, name, email, privilegio } = useAppSelector(state => state.auth);
 
     const getInfoProfile = async () => {
         const docRef = doc(dbFirestore, `usuarios/${token}`);
@@ -67,36 +67,45 @@ export const SettingScreen = ({ navigation }: Props) => {
                 <Text style={{ fontSize: 14, fontWeight: '600' }}>Editar Perfil</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.containerMenu} onPress={() => {
-                dispatch(resetUserList());
-                navigation.navigate('UsersSetting');
-            }}>
-                <View style={[styles.containerIcon]}>
-                    <Foundation name="torsos" size={20} color={colores.white} />
-                </View>
-                <Text style={{ fontSize: 14, fontWeight: '600' }}>Usuarios</Text>
-            </TouchableOpacity>
 
-            <TouchableOpacity style={styles.containerMenu} onPress={() => navigation.navigate('AddUser')}>
-                <View style={[styles.containerIcon]}>
-                    <Foundation name="torsos" size={20} color={colores.white} />
-                </View>
-                <Text style={{ fontSize: 14, fontWeight: '600' }}>Crear usuario</Text>
-            </TouchableOpacity>
 
-            <TouchableOpacity style={[styles.containerMenu, { marginTop: 25, }]}>
+            {
+                privilegio === 'admin' &&
+                <>
+                    <TouchableOpacity style={styles.containerMenu} onPress={() => {
+                        dispatch(resetUserList());
+                        navigation.navigate('UsersSetting');
+                    }}>
+                        <View style={[styles.containerIcon]}>
+                            <Foundation name="torsos" size={20} color={colores.white} />
+                        </View>
+                        <Text style={{ fontSize: 14, fontWeight: '600' }}>Usuarios</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity style={styles.containerMenu} onPress={() => navigation.navigate('AddUser')}>
+                        <View style={[styles.containerIcon]}>
+                            <Foundation name="torsos" size={20} color={colores.white} />
+                        </View>
+                        <Text style={{ fontSize: 14, fontWeight: '600' }}>Crear usuario</Text>
+                    </TouchableOpacity>
+                </>
+            }
+
+
+
+            <TouchableOpacity style={[styles.containerMenu, { marginTop: 25, }]} onPress={() => navigation.navigate('PrivacyPolicy')}>
                 <View style={[styles.containerIcon]}>
                     <Foundation name="alert" size={20} color={colores.white} />
                 </View>
                 <Text style={{ fontSize: 14, fontWeight: '600' }}>Política y Privacidad</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.containerMenu}>
+            {/* <TouchableOpacity style={styles.containerMenu}>
                 <View style={[styles.containerIcon]}>
                     <Foundation name="torsos" size={20} color={colores.white} />
                 </View>
                 <Text style={{ fontSize: 14, fontWeight: '600' }}>Términos y Condiciones</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
 
             <TouchableOpacity style={styles.containerMenu} onPress={() => dispatch(signOuts())}>
                 <View style={[styles.containerIcon, { backgroundColor: colores.delete }]}>

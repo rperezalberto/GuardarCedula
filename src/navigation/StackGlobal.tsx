@@ -7,6 +7,7 @@ import { AddPhoto } from "../screens/home/AddPhoto";
 import { AddUser } from '../screens/setting/AddUser';
 import { InfoDocScreen } from '../screens/home/InfoDocScreen';
 import { InfUser } from '../screens/setting/InfUser';
+import { PrivacyPolicy } from '../screens/setting/PrivacyPolicy';
 
 
 export type RootStack = {
@@ -17,6 +18,7 @@ export type RootStack = {
     AddUser: undefined
     InfoDocumento: undefined
     InfUser: undefined
+    PrivacyPolicy: undefined
 }
 
 
@@ -97,6 +99,14 @@ export const StackGlobal = () => {
                 component={InfUser}
                 options={{
                     title: "Usuario",
+                    headerShown: true,
+                }}
+            />
+            <Stack.Screen
+                name="PrivacyPolicy"
+                component={PrivacyPolicy}
+                options={{
+                    title: "Política y privacidad",
                     headerShown: true,
                 }}
             />

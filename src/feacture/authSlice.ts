@@ -10,6 +10,7 @@ const initialState = {
     name: '',
     email: '',
     token: null,
+    privilegio: '',
     createUserUser: '',
     data: [],
     users: [],
@@ -27,8 +28,14 @@ const authSlice = createSlice({
     name: 'auth',
     initialState,
     reducers: {
-        home: (state, action) => {
+        setToken: (state, action) => {
             state.token = action.payload;
+        },
+        home: (state, action) => {
+            state.token = action.payload.id;
+            state.name = action.payload.name;
+            state.email = action.payload.email;
+            state.privilegio = action.payload.privilegio;
         },
         signUp: (state, action) => {
             state.name = action.payload.name;
@@ -80,6 +87,7 @@ const authSlice = createSlice({
 });
 
 export const {
+    setToken,
     home,
     singIn,
     signUp,

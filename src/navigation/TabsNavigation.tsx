@@ -1,3 +1,4 @@
+import { Pressable, Text } from 'react-native';
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { HomeScreen } from '../screens/home/HomeScreen';
 import { SearchScreen } from '../screens/home/SearchScreen';
@@ -5,6 +6,7 @@ import { SettingScreen } from '../screens/home/SettingScreen';
 import { MaterialIcons } from '@expo/vector-icons';
 import { colores } from '../theme/Colores';
 import { useAppDispatch } from '../hook/hook';
+import { resultSearch } from '../feacture/authSlice';
 
 const Tabs = createBottomTabNavigator();
 
@@ -34,7 +36,8 @@ export const TabsNavigation = () => {
                 name="Home"
                 component={HomeScreen}
                 options={{
-                    title: 'Home',
+                    headerTitle: 'Listado de cédulas',
+                    title: 'Cédulas',
                     tabBarIcon: ({ color, size }) => <MaterialIcons name="home" size={size} color={color} />
                 }}
             />
@@ -43,7 +46,7 @@ export const TabsNavigation = () => {
                 component={SearchScreen}
                 options={{
                     title: 'Buscar',
-                    tabBarIcon: ({ color, size }) => <MaterialIcons name="search" size={size} color={color} />
+                    tabBarIcon: ({ color, size }) => <MaterialIcons name="search" size={size} color={color} />,
                 }}
             />
             <Tabs.Screen

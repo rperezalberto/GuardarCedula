@@ -1,4 +1,4 @@
-import { TouchableOpacity, Text, StyleSheet } from 'react-native';
+import { TouchableOpacity, StyleSheet } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { colores } from '../theme/Colores';
 
@@ -22,8 +22,8 @@ const styles = StyleSheet.create({
     contianer: {
         bottom: 15,
         right: 10,
-        width: 70,
-        height: 70,
+        width: 50,
+        height: 50,
         position: 'absolute',
         backgroundColor: colores.secundary,
         borderRadius: 100,

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { View, Text, Image, StyleSheet, TouchableOpacity, Alert, Share, } from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableOpacity, Alert, } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import { colores } from '../../theme/Colores';
 import { GlobalStyle } from '../../theme/GlobalStyle';
@@ -52,7 +52,7 @@ export const InfoDocScreen = ({ route, navigation }: any) => {
                     text: 'Ok!',
                     onPress: () => deleteImg()
                 }
-            ]
+            ],
         )
     }
 
@@ -97,6 +97,11 @@ export const InfoDocScreen = ({ route, navigation }: any) => {
         alert('Cedula descargada, revice la galeria');
     }
 
+
+
+
+
+
     if (isLoad) return <ActivityScreen />
 
 
@@ -118,6 +123,7 @@ export const InfoDocScreen = ({ route, navigation }: any) => {
                     <Text style={styles.txt}>Eliminar</Text>
                     <AntDesign name="delete" size={24} color={colores.white} />
                 </TouchableOpacity>
+
             </View>
 
         </View>

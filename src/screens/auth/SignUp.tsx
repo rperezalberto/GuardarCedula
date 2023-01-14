@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
-// import { CanvasComponent } from '../../components/CanvasComponent';
+import { CanvasComponent } from '../../components/CanvasComponent';
 import { GlobalStyle } from '../../theme/GlobalStyle';
 import { colores } from '../../theme/Colores';
 import { AntDesign } from '@expo/vector-icons';
@@ -58,7 +58,7 @@ export const SignUp = ({ navigation }: Props) => {
 
   return (
     <ScrollView style={{ flex: 1 }}>
-      {/* <CanvasComponent /> */}
+      <CanvasComponent />
       <View style={styles.container}>
         <View style={[styles.maginV, { flexDirection: 'row', alignSelf: 'center' }]}>
           <Text style={GlobalStyle.txtTitle}>Crear </Text>

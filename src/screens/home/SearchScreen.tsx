@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { View, Text, FlatList, Image, StyleSheet, TouchableOpacity, useWindowDimensions, TextInput } from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableOpacity, useWindowDimensions, TextInput } from 'react-native';
 import { useAppSelector, useAppDispatch } from '../../hook/hook';
 import { GlobalStyle } from '../../theme/GlobalStyle';
 import { colores } from '../../theme/Colores';
@@ -25,25 +25,24 @@ export const SearchScreen = ({ navigation }: Props) => {
 
     const [isLoad, setIsLoad] = useState(false);
     const [name, setName] = useState('');
-    // const [dataSearch, setDataSearch] = useState({
-    //     title: null,
-    //     nameImg: null,
-    //     tokenUser: null,
-    //     urlCedula: null
-    // });
+
+
 
     useEffect(() => {
-        console.log('Pase');
-        dispatch(resultSearch(
-            {
-                title: '',
-                nameImg: '',
-                tokenUser: '',
-                urlCedula: '',
-                id: ''
-            }
-        ));
-    }, [])
+        navigation.addListener('focus', () => {
+            dispatch(resultSearch(
+                {
+                    title: '',
+                    nameImg: '',
+                    tokenUser: '',
+                    urlCedula: '',
+                    id: ''
+                }
+            ));
+        });
+    }, []);
+
+
 
 
 

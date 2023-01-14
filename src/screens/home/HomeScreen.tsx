@@ -75,16 +75,6 @@ export const HomeScreen = ({ navigation }: Props) => {
         )
     }
 
-    // const getDocuments = () => {
-    //     onSnapshot(collection(dbFirestore, `cedulaInfo`), (document) => {
-    //         document.forEach(item => {
-    //             dispatch(getDocument({ data: item.data(), id: item.id }));
-    //         });
-    //     })
-    // }
-
-    // const getData = useMemo(() => getDocuments(), []);
-
     useEffect(() => {
         const getDocuments = () => {
             onSnapshot(collection(dbFirestore, `cedulaInfo`), (document) => {
@@ -107,11 +97,11 @@ export const HomeScreen = ({ navigation }: Props) => {
                 numColumns={3}
                 scrollEnabled={true}
             />
-            <View style={{ position: 'absolute', bottom: 80, right: 0 }}>
-                <BtnAdd icon='image' size={24} color='#FFF' onPress={() => addGalery()} />
+            <View style={{ position: 'absolute', bottom: 60, right: 0 }}>
+                <BtnAdd icon='image' size={20} color='#FFF' onPress={() => addGalery()} />
             </View>
             <View>
-                <BtnAdd icon='camera-alt' size={24} color='#FFF' onPress={() => AddPhoto()} />
+                <BtnAdd icon='camera-alt' size={20} color='#FFF' onPress={() => AddPhoto()} />
             </View>
         </>
     )
