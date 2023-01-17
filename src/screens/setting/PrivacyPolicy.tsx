@@ -1,6 +1,5 @@
 import React from 'react'
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
-import { GlobalStyle } from '../../theme/GlobalStyle';
 import { colores } from '../../theme/Colores';
 export const PrivacyPolicy = () => {
     return (
@@ -21,9 +20,6 @@ export const PrivacyPolicy = () => {
                 <Text style={styles.txtTitle}>Información de contacto:</Text>
                 <Text style={styles.txt}>Si deseas comunicarte con nosotros para comprender más sobre esta Política o deseas comunicarte con nosotros en relación con cualquier asunto sobre los derechos individuales y tu información personal, puedes enviarnos un correo electrónico a hospitalmunicipal.p.b.92@hotmail.es.</Text>
             </View>
-
-
-
         </ScrollView>
     )
 }

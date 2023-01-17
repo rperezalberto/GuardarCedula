@@ -16,7 +16,7 @@ import { StackScreenProps } from '@react-navigation/stack';
 
 interface Props extends StackScreenProps<any, any> { };
 
-export const AddPhoto = ({ route }: any, { navigation }: Props) => {
+export const AddPhoto = ({ route, navigation }: Props) => {
     const urlTmp = route.params[0].uri;
 
 
@@ -41,7 +41,7 @@ export const AddPhoto = ({ route }: any, { navigation }: Props) => {
                     .then(e => {
                         uploadImgTitle(e, nameImg);
                         dispatch(resetData());
-                        console.log('Subido')
+                        navigation.navigate('HomeScreen');
                     })
 
                 // uploadImgTitle(urlCedula);

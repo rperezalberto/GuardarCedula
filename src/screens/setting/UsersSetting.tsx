@@ -1,11 +1,10 @@
 import { useEffect, useMemo } from 'react';
 import { View, Text, FlatList, TouchableOpacity, StyleSheet } from 'react-native'
 import { dbFirestore, dbAuth } from '../../firebase/config';
-import { deleteUser, reauthenticateWithCredential } from 'firebase/auth';
+import { deleteUser, reauthenticateWithCredential, getAuth } from 'firebase/auth';
 import { collection, onSnapshot } from 'firebase/firestore';
 import { useAppSelector, useAppDispatch } from '../../hook/hook';
 import { getUsers } from '../../feacture/authSlice';
-import prompt from 'react-native-prompt-android';
 
 import { ListItem } from '@rneui/themed';
 import { colores } from '../../theme/Colores';
@@ -39,25 +38,16 @@ export const UsersSetting = ({ navigation }: Props) => {
 
 
 
-    const deleteUsers = () => {
-        // const user = dbAuth.currentUser;
-        // const credential = ;
+    const deleteUsers = async () => {
+        // const auth = getAuth();
+        // const user = auth.currentUser;
 
-        prompt(
-            'Enter password',
-            'Enter your password to claim your $1.5B in lottery winnings',
-            [
-                { text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
-                { text: 'OK', onPress: password => console.log('OK Pressed, password: ' + password) },
-            ],
-        );
+        // const credential = promptForCredentials();
 
-        //  await reauthenticateWithCredential(user, credential)
-
-        // await deleteUser(user).then(() => {
-        //     alert('Borrado');
+        // reauthenticateWithCredential(user, credential).then(() => {
+        //     alert('Ya')
         // }).catch((error) => {
-        //     alert(error)
+        //     alert(error);
         // });
 
     }

@@ -67,12 +67,10 @@ export const SettingScreen = ({ navigation }: Props) => {
                 <Text style={{ fontSize: 14, fontWeight: '600' }}>Editar Perfil</Text>
             </TouchableOpacity>
 
-
-
             {
                 privilegio === 'admin' &&
                 <>
-                    <TouchableOpacity style={styles.containerMenu} onPress={() => {
+                    {/* <TouchableOpacity style={styles.containerMenu} onPress={() => {
                         dispatch(resetUserList());
                         navigation.navigate('UsersSetting');
                     }}>
@@ -80,7 +78,7 @@ export const SettingScreen = ({ navigation }: Props) => {
                             <Foundation name="torsos" size={20} color={colores.white} />
                         </View>
                         <Text style={{ fontSize: 14, fontWeight: '600' }}>Usuarios</Text>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
 
                     <TouchableOpacity style={styles.containerMenu} onPress={() => navigation.navigate('AddUser')}>
                         <View style={[styles.containerIcon]}>

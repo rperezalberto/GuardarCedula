@@ -5,11 +5,13 @@ import { GlobalStyle } from '../../theme/GlobalStyle';
 import { colores } from '../../theme/Colores';
 import { AntDesign } from '@expo/vector-icons';
 import { StackScreenProps } from '@react-navigation/stack';
-import { dbAuth } from '../../firebase/config';
+import DropDownPicker from 'react-native-dropdown-picker';
+import { dbAuth, dbFirestore } from '../../firebase/config';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { useAppDispatch } from '../../hook/hook';
-import { signUp } from '../../feacture/authSlice';
+import { home, signUp } from '../../feacture/authSlice';
 import { ActivityScreen } from '../activity/ActivityScreen';
+import { getDoc, doc, collection, setDoc } from 'firebase/firestore';
 
 
 interface Props extends StackScreenProps<any, any> { };
@@ -21,6 +23,13 @@ export const SignUp = ({ navigation }: Props) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [pass, setPass] = useState('');
+
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState(null);
+  const [items, setItems] = useState([
+    { label: 'Administrador', value: 'admin' },
+    { label: 'Usuario', value: 'user' }
+  ]);
 
   const [isLoad, setIsLoad] = useState(false);
 
@@ -35,22 +44,56 @@ export const SignUp = ({ navigation }: Props) => {
         setIsLoad(true);
         await createUserWithEmailAndPassword(dbAuth, email, pass)
           .then(e => {
+            // console.log(e.user.uid)
             dispatch(signUp({ name, email }));
+            validarPrivilegio(e.user.uid);
             navigation.navigate('SignIn');
           })
           .catch(e => {
             alert('Usuario a existe');
           })
-        setIsLoad(true);
+        setIsLoad(false);
       } else {
         alert('Todos los caampos son obligatorio');
-        setIsLoad(true);
+        setIsLoad(false);
       }
 
     } catch (error) {
       console.log(error);
-      setIsLoad(true);
+      setIsLoad(false);
     }
+  }
+
+  const validarPrivilegio = async (id: any) => {
+
+    // const docRef = collection(dbFirestore, 'usuarios', id);
+
+    const docRef = doc(dbFirestore, 'usuarios', id);
+
+    await setDoc(docRef, {
+      id: id,
+      name: name,
+      email: email,
+      privilegio: value
+    });
+
+    // doc(collection(dbFirestore, 'usuarios', id), {
+
+    // })
+
+    // const docSnap = await getDoc(docRef);
+    // const data = docSnap.data();
+
+    // console.log(data);
+
+    // dispatch(home({
+    //   id: data.id,
+    //   name: data.name,
+    //   email: data.email,
+    //   privilegio: data.privilegio
+    // })
+    // );
+    // console.log(docSnap.data());
   }
 
 
@@ -86,6 +129,15 @@ export const SignUp = ({ navigation }: Props) => {
               placeholder='Contraseña'
               secureTextEntry={eye}
               onChangeText={e => setPass(e)}
+            />
+            <DropDownPicker
+              open={open}
+              value={value}
+              items={items}
+              setOpen={setOpen}
+              setValue={setValue}
+              setItems={setItems}
+              style={GlobalStyle.input}
             />
 
             <TouchableOpacity style={GlobalStyle.eyes} onPress={() => (eye) ? setEye(false) : setEye(true)}>

@@ -57,7 +57,7 @@ export const AddUser = ({ navigation }: Props) => {
         })
     }
 
-    console.log(value);
+    // console.log(value);
     if (isLoad) return <ActivityScreen />
 
     return (

@@ -41,6 +41,7 @@ export const SignIn = ({ navigation }: Props) => {
             validarPrivilegio(token)
             AsyncStorage.setItem('@token', token);
           })
+        setIsLoad(false);
       } else {
         alert('Todos los campos son obligatorio');
       }
@@ -68,12 +69,16 @@ export const SignIn = ({ navigation }: Props) => {
 
 
   const getValue = async () => {
+    setIsLoad(true);
     const value = await AsyncStorage.getItem('@token');
+    setIsLoad(false);
 
     if (value) {
       dispatch(setToken(value));
+      setIsLoad(false);
       // signHome();
     }
+    setIsLoad(false);
   }
 
 
@@ -91,7 +96,6 @@ export const SignIn = ({ navigation }: Props) => {
       privilegio: data.privilegio
     })
     );
-    // console.log(dataUser);
     console.log(docSnap.data());
   }
 
@@ -126,8 +130,6 @@ export const SignIn = ({ navigation }: Props) => {
 
 
   if (isLoad) return <ActivityScreen />
-
-
 
   return (
     <ScrollView style={{ flex: 1, backgroundColor: colores.white }} >
@@ -202,10 +204,17 @@ export const SignIn = ({ navigation }: Props) => {
 
         <View style={GlobalStyle.footer}>
           <Text style={{ color: colores.third }}>¿Aún no te registras? </Text>
-          <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
+          <TouchableOpacity onPress={() => alert('Solo Robin puede hacer esto')}>
             <Text style={{ color: colores.black, fontWeight: '600' }}>Crear una cuenta</Text>
           </TouchableOpacity>
         </View>
+
+        {/* <View style={GlobalStyle.footer}>
+          <Text style={{ color: colores.third }}>¿Aún no te registras? </Text>
+          <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
+            <Text style={{ color: colores.black, fontWeight: '600' }}>Crear una cuenta</Text>
+          </TouchableOpacity>
+        </View> */}
 
       </View>
     </ScrollView>
@@ -256,6 +265,3 @@ const styles = StyleSheet.create({
   },
 
 })
-
-
-   // MediaLibrary.saveToLibraryAsync();

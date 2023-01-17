@@ -8,12 +8,12 @@ import config from "../../config";
 // Your web app's Firebase configuration
 const firebaseConfig = {
 
-    apiKey: "AIzaSyBFaSiFp6Sx8lejSXiZ0x75zooUmioWwiQ",
-    authDomain: "hospital-guardar-cedula-sns.firebaseapp.com",
-    projectId: "hospital-guardar-cedula-sns",
-    storageBucket: "hospital-guardar-cedula-sns.appspot.com",
-    messagingSenderId: "712167991536",
-    appId: "1:712167991536:web:23a3a00188dad473233a35"
+    apiKey: "AIzaSyDrhUTNZDr9QPfyJhQboe-1Tv8X8ClQNbk",
+    authDomain: "guardarcedula.firebaseapp.com",
+    projectId: "guardarcedula",
+    storageBucket: "guardarcedula.appspot.com",
+    messagingSenderId: "270079563565",
+    appId: "1:270079563565:web:859650651f8099c85525a4"
     // apiKey: config.API_APIKEY,
     // authDomain: config.API_AUTHDOMAIN,
     // projectId: 'hospital-guardar-cedula-sns',

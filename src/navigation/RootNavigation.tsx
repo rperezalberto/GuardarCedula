@@ -7,6 +7,8 @@ import { StackGlobal } from './StackGlobal';
 
 
 export const RootNavigation = () => {
+
+
   return (
     <NavigationContainer>
       <_NavigationActive />

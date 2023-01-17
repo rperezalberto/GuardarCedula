@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { View, Text, Image, StyleSheet, TouchableOpacity, Alert, } from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import { colores } from '../../theme/Colores';
 import { GlobalStyle } from '../../theme/GlobalStyle';
@@ -12,6 +12,9 @@ import { deleteObject, ref, getDownloadURL } from 'firebase/storage';
 import * as FileSystem from 'expo-file-system';
 import * as MediaLibrary from 'expo-media-library';
 import { ActivityScreen } from '../activity/ActivityScreen';
+import * as Sharing from 'expo-sharing';
+
+// import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 export const InfoDocScreen = ({ route, navigation }: any) => {
 
@@ -23,7 +26,6 @@ export const InfoDocScreen = ({ route, navigation }: any) => {
     const dispatch = useAppDispatch();
 
     const AlertComponent = (item: any) => {
-
 
         const deleteImg = async () => {
             const desertRef = ref(dbStore, `cedulaInfo/${(dateInfo.data) ? item.data.nameImg : dataSearch.nameImg}`);
@@ -42,7 +44,7 @@ export const InfoDocScreen = ({ route, navigation }: any) => {
 
         Alert.alert(
             'Borrar',
-            `Estas seguro que quiere a borrar ${(dateInfo.data) ? item.data.title : dataSearch.title}?`,
+            `Estas seguro que quiere borrar a ${(dateInfo.data) ? item.data.title : dataSearch.title}?`,
             [
                 {
                     text: 'Cancelar',
@@ -80,7 +82,6 @@ export const InfoDocScreen = ({ route, navigation }: any) => {
                 .then(({ uri }) => {
                     console.log('Finished downloading to ', uri);
                     creteAlbum(uri);
-
                 })
                 .catch(error => {
                     console.error(error);
@@ -98,7 +99,25 @@ export const InfoDocScreen = ({ route, navigation }: any) => {
     }
 
 
+    const share = async () => {
 
+        const url = (dateInfo.data) ? dateInfo.data.urlCedula : dataSearch.urlCedula;
+
+        setIsLoad(true);
+        await FileSystem.downloadAsync(url, FileSystem.documentDirectory + `${dateInfo.data ? dateInfo.data.title : dateInfo.title}.png`)
+            .then(({ uri }) => {
+                console.log('Finished downloading to ', uri);
+                Sharing.shareAsync(uri, {
+                    dialogTitle: dateInfo.data ? dateInfo.data.title : dateInfo.title
+                })
+            })
+            .catch(error => {
+                setIsLoad(false);
+                console.error(error);
+            });
+
+        setIsLoad(false);
+    }
 
 
 
@@ -115,15 +134,19 @@ export const InfoDocScreen = ({ route, navigation }: any) => {
 
             <View style={{ flexDirection: 'row', marginVertical: 20 }}>
                 <TouchableOpacity style={[styles.btn, { backgroundColor: colores.primary }]} onPress={() => DownloadImg()}>
-                    <Text style={styles.txt}>Descargar</Text>
+                    {/* <Text style={styles.txt}>Descargar</Text> */}
                     <AntDesign name="clouddownloado" size={24} color={colores.white} />
                 </TouchableOpacity>
 
-                <TouchableOpacity style={[styles.btn, { backgroundColor: colores.delete }]} onPress={() => AlertComponent(dateInfo)}>
-                    <Text style={styles.txt}>Eliminar</Text>
-                    <AntDesign name="delete" size={24} color={colores.white} />
+                <TouchableOpacity style={[styles.btn, { backgroundColor: colores.secundary }]} onPress={() => share()}>
+                    {/* <Text style={styles.txt}>Eliminar</Text> */}
+                    <AntDesign name="sharealt" size={24} color={colores.white} />
                 </TouchableOpacity>
 
+                <TouchableOpacity style={[styles.btn, { backgroundColor: colores.delete }]} onPress={() => AlertComponent(dateInfo)}>
+                    {/* <Text style={styles.txt}>Compartir</Text> */}
+                    <AntDesign name="delete" size={24} color={colores.white} />
+                </TouchableOpacity>
             </View>
 
         </View>
@@ -143,12 +166,22 @@ const styles = StyleSheet.create({
         resizeMode: 'cover',
     },
     btn: {
-        width: 150,
+        width: 90,
+        height: 40,
         flexDirection: 'row',
         marginHorizontal: 10,
         borderRadius: 10,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        shadowColor: colores.black,
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowRadius: 3.5,
+        shadowOpacity: 5,
+        elevation: 5,
+
     },
     txt: {
         color: colores.white,
