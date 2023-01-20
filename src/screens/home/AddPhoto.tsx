@@ -35,7 +35,7 @@ export const AddPhoto = ({ route, navigation }: Props) => {
                 const url = await LoadImg(urlTmp);
                 const nameImg = v4();
                 const storageRef = ref(dbStore, 'cedulaInfo/' + nameImg);
-                console.log(storageRef);
+                // console.log(storageRef);
                 await uploadBytes(storageRef, url);
                 await getDownloadURL(storageRef)
                     .then(e => {
